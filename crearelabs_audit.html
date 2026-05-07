@@ -1,0 +1,2376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crearelabs × Hyderabad Stories — Full Audit Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cl-red: #E8321A;
+  --cl-dark: #0D0D0D;
+  --cl-cream: #F5F0E8;
+  --cl-gold: #C9A84C;
+  --cl-orange: #F26522;
+  --cl-teal: #1A7A6E;
+  --cl-blue: #1A3A6E;
+  --hs-saffron: #FF6B00;
+  --hs-green: #1B5E20;
+  --hs-red: #B71C1C;
+  --warn: #FF3B30;
+  --ok: #34C759;
+  --mid: #FF9500;
+  --text: #1A1A1A;
+  --muted: #6B6B6B;
+  --border: rgba(0,0,0,0.08);
+  --card-bg: #FFFFFF;
+  --section-bg: #FAFAF8;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cl-cream);
+  color: var(--text);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* CUSTOM CURSOR */
+.cursor {
+  width: 12px; height: 12px;
+  background: var(--cl-red);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none;
+  z-index: 99999;
+  transition: transform 0.1s;
+  mix-blend-mode: multiply;
+}
+.cursor-ring {
+  width: 40px; height: 40px;
+  border: 1.5px solid var(--cl-red);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none;
+  z-index: 99998;
+  transition: transform 0.15s, opacity 0.15s;
+  opacity: 0.5;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: rgba(13,13,13,0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 0 40px;
+  height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand {
+  display: flex; align-items: center; gap: 12px;
+  text-decoration: none;
+}
+.nav-logo {
+  width: 32px; height: 32px;
+  background: var(--cl-red);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  color: white;
+  font-size: 14px;
+  letter-spacing: -0.5px;
+}
+.nav-brand span {
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+  letter-spacing: 0.3px;
+}
+.nav-links {
+  display: flex; gap: 4px;
+}
+.nav-links a {
+  color: rgba(255,255,255,0.55);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+.nav-links a:hover { color: white; background: rgba(255,255,255,0.08); }
+.nav-badge {
+  background: var(--cl-red);
+  color: white;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.3px;
+}
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  background: var(--cl-dark);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 80px 60px 80px;
+  overflow: hidden;
+}
+.hero-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(232,50,26,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232,50,26,0.06) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.hero-glow {
+  position: absolute;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(232,50,26,0.15) 0%, transparent 70%);
+  right: -100px; top: -100px;
+  pointer-events: none;
+}
+.hero-glow-2 {
+  position: absolute;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(201,168,76,0.1) 0%, transparent 70%);
+  left: 10%; bottom: -100px;
+  pointer-events: none;
+}
+.hero-eyebrow {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 28px;
+}
+.hero-eyebrow-line {
+  width: 40px; height: 1px;
+  background: var(--cl-red);
+}
+.hero-eyebrow span {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--cl-red);
+  font-family: 'JetBrains Mono', monospace;
+}
+.hero-headline {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(56px, 7vw, 100px);
+  font-weight: 900;
+  line-height: 0.92;
+  color: white;
+  position: relative;
+  z-index: 2;
+  margin-bottom: 16px;
+}
+.hero-headline .accent { color: var(--cl-red); font-style: italic; }
+.hero-headline .gold { color: var(--cl-gold); }
+.hero-sub {
+  font-size: 18px;
+  color: rgba(255,255,255,0.4);
+  max-width: 500px;
+  line-height: 1.6;
+  margin-bottom: 50px;
+  font-weight: 300;
+}
+.hero-stats {
+  display: flex; gap: 48px;
+  position: relative; z-index: 2;
+}
+.hero-stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  font-weight: 900;
+  color: white;
+  line-height: 1;
+}
+.hero-stat-num span { color: var(--cl-red); }
+.hero-stat-label {
+  font-size: 12px;
+  color: rgba(255,255,255,0.35);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+.hero-badge {
+  position: absolute;
+  right: 60px; bottom: 80px;
+  width: 140px; height: 140px;
+  border: 1px solid rgba(232,50,26,0.3);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  animation: spin-slow 20s linear infinite;
+}
+.hero-badge-inner {
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.5;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+.hero-badge-inner strong {
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  color: var(--cl-gold);
+  font-weight: 700;
+}
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.hero-scroll {
+  position: absolute;
+  right: 60px; top: 50%;
+  transform: translateY(-50%);
+  writing-mode: vertical-rl;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,0.2);
+  text-transform: uppercase;
+  display: flex; align-items: center; gap: 10px;
+}
+.hero-scroll::before {
+  content: '';
+  width: 1px; height: 60px;
+  background: linear-gradient(to bottom, transparent, rgba(232,50,26,0.5));
+}
+
+/* SECTION WRAPPER */
+.section {
+  padding: 100px 60px;
+  position: relative;
+}
+.section-alt { background: var(--section-bg); }
+.section-dark {
+  background: var(--cl-dark);
+  color: white;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 60px;
+  gap: 40px;
+}
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--cl-red);
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-label::before {
+  content: '';
+  width: 20px; height: 1px;
+  background: var(--cl-red);
+  flex-shrink: 0;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(32px, 4vw, 54px);
+  font-weight: 900;
+  line-height: 1.05;
+  color: inherit;
+}
+.section-title .italic { font-style: italic; color: var(--cl-red); }
+.section-title.light .italic { color: var(--cl-gold); }
+.section-desc {
+  font-size: 15px;
+  color: var(--muted);
+  max-width: 380px;
+  line-height: 1.7;
+}
+.section-dark .section-desc { color: rgba(255,255,255,0.4); }
+
+/* CRITICAL ALERT */
+.critical-alert {
+  background: linear-gradient(135deg, #1A0000, #2D0A0A);
+  border: 1px solid rgba(232,50,26,0.3);
+  border-radius: 20px;
+  padding: 48px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+.critical-alert::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 20% 50%, rgba(232,50,26,0.12) 0%, transparent 60%);
+}
+.alert-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--cl-red);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 30px;
+  margin-bottom: 24px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.pulse-dot {
+  width: 8px; height: 8px;
+  background: white;
+  border-radius: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
+.alert-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  font-weight: 900;
+  color: white;
+  margin-bottom: 12px;
+}
+.alert-title span { color: var(--cl-red); }
+.alert-desc {
+  color: rgba(255,255,255,0.5);
+  font-size: 15px;
+  line-height: 1.7;
+  max-width: 600px;
+  margin-bottom: 36px;
+}
+
+/* STEPS */
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+.step-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 28px;
+  position: relative;
+  transition: all 0.3s;
+}
+.step-card:hover {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(232,50,26,0.3);
+  transform: translateY(-3px);
+}
+.step-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--cl-red);
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-bottom: 14px;
+}
+.step-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 10px;
+}
+.step-body {
+  font-size: 13.5px;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.65;
+}
+.step-body li { list-style: none; padding: 3px 0; padding-left: 14px; position: relative; }
+.step-body li::before { content: '→'; position: absolute; left: 0; color: var(--cl-red); font-size: 11px; top: 4px; }
+
+/* AUDIT SCORE CARD */
+.audit-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 60px;
+}
+.audit-score-card {
+  background: white;
+  border-radius: 20px;
+  padding: 32px;
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+}
+.audit-score-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+}
+.audit-score-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+}
+.score-red::before { background: var(--warn); }
+.score-orange::before { background: var(--mid); }
+.score-green::before { background: var(--ok); }
+.score-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.score-platform {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 900;
+  margin-bottom: 20px;
+}
+.score-circle {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+  font-weight: 900;
+  font-family: 'Playfair Display', serif;
+  margin-bottom: 20px;
+}
+.score-red .score-circle { background: rgba(255,59,48,0.1); color: var(--warn); }
+.score-orange .score-circle { background: rgba(255,149,0,0.1); color: var(--mid); }
+.score-green .score-circle { background: rgba(52,199,89,0.1); color: var(--ok); }
+.score-items {
+  display: flex; flex-direction: column; gap: 8px;
+}
+.score-item {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 13px;
+}
+.score-item-label { color: var(--muted); }
+.score-item-val {
+  font-weight: 700;
+  font-size: 14px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* DETAIL CARDS */
+.detail-block {
+  background: white;
+  border-radius: 24px;
+  padding: 48px;
+  border: 1px solid var(--border);
+  margin-bottom: 32px;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+}
+.detail-block-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 36px;
+  gap: 20px;
+}
+.detail-block-icon {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+.icon-instagram { background: linear-gradient(135deg, #833AB4, #FD1D1D, #FCAF45); }
+.icon-facebook { background: #1877F2; }
+.icon-seo { background: linear-gradient(135deg, #4285F4, #0F9D58); }
+.icon-meta { background: linear-gradient(135deg, #0668E1, #1877F2); }
+.icon-google { background: linear-gradient(135deg, #EA4335, #4285F4); }
+.detail-block-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 900;
+}
+.detail-block-desc {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-top: 6px;
+  max-width: 500px;
+}
+
+/* METRIC ROW */
+.metrics-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin-bottom: 36px;
+}
+.metric-pill {
+  background: var(--section-bg);
+  border-radius: 14px;
+  padding: 20px 18px;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+.metric-pill-val {
+  font-family: 'Playfair Display', serif;
+  font-size: 30px;
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.metric-pill-label {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+.val-red { color: var(--warn); }
+.val-orange { color: var(--mid); }
+.val-green { color: var(--ok); }
+.val-blue { color: #007AFF; }
+
+/* ISSUE LIST */
+.issue-list {
+  display: flex; flex-direction: column; gap: 12px;
+  margin-bottom: 28px;
+}
+.issue-item {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.6;
+  border: 1px solid transparent;
+}
+.issue-critical {
+  background: rgba(255,59,48,0.05);
+  border-color: rgba(255,59,48,0.15);
+}
+.issue-warning {
+  background: rgba(255,149,0,0.05);
+  border-color: rgba(255,149,0,0.15);
+}
+.issue-badge {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-family: 'JetBrains Mono', monospace;
+  margin-top: 1px;
+}
+.badge-critical { background: var(--warn); color: white; }
+.badge-warning { background: var(--mid); color: white; }
+.badge-info { background: #007AFF; color: white; }
+.issue-text { color: var(--text); font-weight: 400; }
+.issue-text strong { font-weight: 700; }
+
+/* FIX LIST */
+.fix-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+  margin-top: 28px;
+}
+.fix-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 16px 18px;
+  background: linear-gradient(135deg, rgba(26,122,110,0.06), rgba(26,122,110,0.02));
+  border: 1px solid rgba(26,122,110,0.15);
+  border-radius: 12px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--text);
+}
+.fix-icon {
+  width: 22px; height: 22px;
+  background: var(--cl-teal);
+  border-radius: 50%;
+  color: white;
+  font-size: 12px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.fix-item strong { font-weight: 700; display: block; margin-bottom: 2px; }
+
+/* SEO CHECKLIST */
+.seo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+.seo-check {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 20px;
+  background: var(--section-bg);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+}
+.seo-check-icon {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.check-pass { background: rgba(52,199,89,0.12); color: var(--ok); }
+.check-fail { background: rgba(255,59,48,0.12); color: var(--warn); }
+.check-warn { background: rgba(255,149,0,0.12); color: var(--mid); }
+.seo-check-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+.seo-check-desc { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+
+/* ROADMAP */
+.roadmap {
+  position: relative;
+  padding-left: 40px;
+}
+.roadmap::before {
+  content: '';
+  position: absolute;
+  left: 12px; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--cl-red), var(--cl-gold), var(--cl-teal), rgba(26,122,110,0.2));
+}
+.roadmap-item {
+  position: relative;
+  margin-bottom: 40px;
+}
+.roadmap-dot {
+  position: absolute;
+  left: -34px; top: 6px;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  border: 2px solid;
+}
+.roadmap-dot-1 { background: var(--cl-red); border-color: var(--cl-red); }
+.roadmap-dot-2 { background: #FF6B00; border-color: #FF6B00; }
+.roadmap-dot-3 { background: var(--cl-gold); border-color: var(--cl-gold); }
+.roadmap-dot-4 { background: #6B9E4C; border-color: #6B9E4C; }
+.roadmap-dot-5 { background: var(--cl-teal); border-color: var(--cl-teal); }
+.roadmap-month {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--cl-red);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.roadmap-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 900;
+  margin-bottom: 10px;
+  color: white;
+}
+.roadmap-items {
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
+.roadmap-tag {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.65);
+  font-size: 12.5px;
+  padding: 6px 14px;
+  border-radius: 30px;
+}
+.roadmap-outcome {
+  margin-top: 14px;
+  padding: 14px 18px;
+  background: rgba(201,168,76,0.08);
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 10px;
+  font-size: 13px;
+  color: var(--cl-gold);
+  font-weight: 500;
+}
+
+/* AD BUDGET */
+.budget-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 40px;
+}
+.budget-card {
+  border-radius: 24px;
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+}
+.budget-meta {
+  background: linear-gradient(135deg, #0C1445, #1A3A6E);
+  border: 1px solid rgba(26,119,242,0.3);
+}
+.budget-google {
+  background: linear-gradient(135deg, #1A0E0C, #3D1512);
+  border: 1px solid rgba(234,67,53,0.3);
+}
+.budget-platform-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 900;
+  color: white;
+  margin-bottom: 6px;
+}
+.budget-spend {
+  display: flex; align-items: baseline; gap: 6px;
+  margin-bottom: 28px;
+}
+.budget-amount {
+  font-family: 'Playfair Display', serif;
+  font-size: 44px;
+  font-weight: 900;
+  color: white;
+  line-height: 1;
+}
+.budget-currency {
+  font-size: 16px;
+  color: rgba(255,255,255,0.4);
+  font-weight: 300;
+}
+.budget-metrics {
+  display: flex; flex-direction: column; gap: 14px;
+}
+.budget-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.budget-row-label { color: rgba(255,255,255,0.45); font-size: 13px; }
+.budget-row-val { color: white; font-weight: 700; font-size: 14px; font-family: 'JetBrains Mono', monospace; }
+.budget-disclaimer {
+  margin-top: 20px;
+  padding: 14px 18px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 10px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.35);
+  line-height: 1.6;
+}
+.budget-recommendation {
+  background: linear-gradient(135deg, rgba(201,168,76,0.12), rgba(201,168,76,0.04));
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 20px;
+  padding: 32px 40px;
+}
+.budget-rec-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 900;
+  color: white;
+  margin-bottom: 16px;
+}
+.budget-rec-body {
+  color: rgba(255,255,255,0.55);
+  font-size: 14px;
+  line-height: 1.75;
+}
+.budget-rec-body strong { color: var(--cl-gold); }
+
+/* ADS STRUCTURE */
+.ads-structure {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.ad-campaign-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 28px;
+}
+.ad-campaign-num {
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--cl-gold);
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+.ad-campaign-title { font-size: 17px; font-weight: 700; color: white; margin-bottom: 8px; }
+.ad-campaign-budget { font-size: 22px; font-weight: 900; color: var(--cl-gold); font-family: 'Playfair Display', serif; margin-bottom: 14px; }
+.ad-campaign-desc { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.6; }
+.ad-group-list { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+.ad-group { display: flex; justify-content: space-between; font-size: 12.5px; padding: 8px 12px; background: rgba(255,255,255,0.04); border-radius: 8px; }
+.ad-group-name { color: rgba(255,255,255,0.6); }
+.ad-group-kw { color: var(--cl-gold); font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+
+/* TEAM */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+}
+.team-card {
+  background: white;
+  border-radius: 24px;
+  padding: 36px 28px;
+  text-align: center;
+  border: 1px solid var(--border);
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+}
+.team-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+}
+.team-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+}
+.team-card:nth-child(1)::before { background: linear-gradient(90deg, #833AB4, #FD1D1D); }
+.team-card:nth-child(2)::before { background: linear-gradient(90deg, #1877F2, #42A5F5); }
+.team-card:nth-child(3)::before { background: linear-gradient(90deg, #26A69A, #66BB6A); }
+.team-card:nth-child(4)::before { background: linear-gradient(90deg, #EA4335, #FBBC05); }
+.team-card:nth-child(5)::before { background: linear-gradient(90deg, var(--cl-red), var(--cl-gold)); }
+.team-avatar {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 900;
+  color: white;
+}
+.avatar-1 { background: linear-gradient(135deg, #833AB4, #FD1D1D); }
+.avatar-2 { background: linear-gradient(135deg, #1877F2, #42A5F5); }
+.avatar-3 { background: linear-gradient(135deg, #26A69A, #66BB6A); }
+.avatar-4 { background: linear-gradient(135deg, #EA4335, #FBBC05); }
+.avatar-5 { background: linear-gradient(135deg, var(--cl-red), var(--cl-gold)); }
+.team-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+.team-role {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.team-role-1 { color: #833AB4; }
+.team-role-2 { color: #1877F2; }
+.team-role-3 { color: #26A69A; }
+.team-role-4 { color: #EA4335; }
+.team-role-5 { color: var(--cl-red); }
+.team-tags {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 6px;
+}
+.team-tag {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: var(--section-bg);
+  color: var(--muted);
+  font-weight: 500;
+  border: 1px solid var(--border);
+}
+.team-founder-badge {
+  position: absolute; top: 16px; right: 16px;
+  background: var(--cl-red);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ADDITIONAL GAPS */
+.gaps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+.gap-card {
+  border-radius: 18px;
+  padding: 28px;
+  border: 1px solid var(--border);
+  background: white;
+  transition: all 0.3s;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+.gap-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 35px rgba(0,0,0,0.1);
+}
+.gap-icon {
+  font-size: 28px;
+  margin-bottom: 16px;
+}
+.gap-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 19px;
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+.gap-body {
+  font-size: 13.5px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+.gap-body strong { color: var(--text); font-weight: 600; }
+
+/* PRICING PACKAGES */
+.pkg-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.pkg-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 36px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+.pkg-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+}
+.pkg-card.featured {
+  background: var(--cl-dark);
+  color: white;
+  border-color: rgba(232,50,26,0.3);
+  box-shadow: 0 8px 40px rgba(232,50,26,0.15);
+}
+.pkg-badge {
+  position: absolute; top: 20px; right: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.pkg-badge-rec { background: var(--cl-red); color: white; }
+.pkg-badge-starter { background: rgba(0,0,0,0.06); color: var(--muted); }
+.pkg-badge-premium { background: rgba(201,168,76,0.15); color: var(--cl-gold); }
+.pkg-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  color: var(--muted);
+}
+.pkg-card.featured .pkg-name { color: rgba(255,255,255,0.4); }
+.pkg-price {
+  font-family: 'Playfair Display', serif;
+  font-size: 42px;
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+.pkg-card.featured .pkg-price { color: white; }
+.pkg-price-sub { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+.pkg-card.featured .pkg-price-sub { color: rgba(255,255,255,0.35); }
+.pkg-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0 0 24px;
+}
+.pkg-card.featured .pkg-divider { background: rgba(255,255,255,0.08); }
+.pkg-feature-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+.pkg-feature {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 13.5px;
+  color: var(--text);
+  line-height: 1.4;
+}
+.pkg-card.featured .pkg-feature { color: rgba(255,255,255,0.7); }
+.pkg-feature-check {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--ok);
+  color: white;
+  font-size: 10px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.pkg-cta {
+  display: block;
+  text-align: center;
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.pkg-cta-default {
+  background: var(--section-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.pkg-cta-featured {
+  background: var(--cl-red);
+  color: white;
+  box-shadow: 0 6px 20px rgba(232,50,26,0.3);
+}
+
+/* TABLE */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+.data-table th {
+  text-align: left;
+  padding: 14px 18px;
+  background: var(--section-bg);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 2px solid var(--border);
+  font-family: 'JetBrains Mono', monospace;
+}
+.data-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: top;
+  line-height: 1.5;
+}
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: rgba(0,0,0,0.015); }
+.table-wrapper {
+  background: white;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+}
+
+/* FOOTER */
+footer {
+  background: var(--cl-dark);
+  padding: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.footer-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 900;
+  color: white;
+}
+.footer-brand span { color: var(--cl-red); }
+.footer-tagline {
+  font-size: 13px;
+  color: rgba(255,255,255,0.3);
+  margin-top: 4px;
+}
+.footer-info {
+  text-align: right;
+  font-size: 12px;
+  color: rgba(255,255,255,0.25);
+  line-height: 1.7;
+}
+
+/* ANIMATE ON SCROLL */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* DIVIDER */
+.section-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0 60px;
+}
+
+/* UTILITY */
+.tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.tag {
+  font-size: 12px;
+  padding: 6px 14px;
+  border-radius: 30px;
+  font-weight: 500;
+  border: 1px solid;
+}
+.tag-red { background: rgba(232,50,26,0.08); color: var(--cl-red); border-color: rgba(232,50,26,0.2); }
+.tag-green { background: rgba(26,122,110,0.08); color: var(--cl-teal); border-color: rgba(26,122,110,0.2); }
+.tag-gold { background: rgba(201,168,76,0.1); color: var(--cl-gold); border-color: rgba(201,168,76,0.25); }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .audit-grid { grid-template-columns: 1fr; }
+  .budget-grid { grid-template-columns: 1fr; }
+  .ads-structure { grid-template-columns: 1fr; }
+  .pkg-grid { grid-template-columns: 1fr; }
+  .seo-grid { grid-template-columns: 1fr; }
+  .two-col { grid-template-columns: 1fr; }
+  .hero { padding: 80px 30px 60px; }
+  .section { padding: 60px 30px; }
+  .hero-badge { display: none; }
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  footer { flex-direction: column; gap: 20px; text-align: center; padding: 40px; }
+  .footer-info { text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#">
+    <div class="nav-logo">CL</div>
+    <span>Crearelabs</span>
+  </a>
+  <div class="nav-links">
+    <a href="#crisis">Crisis</a>
+    <a href="#instagram">Instagram</a>
+    <a href="#facebook">Facebook</a>
+    <a href="#website">Website</a>
+    <a href="#ads">Ad Budgets</a>
+    <a href="#roadmap">Roadmap</a>
+    <a href="#team">Team</a>
+    <a href="#packages">Packages</a>
+  </div>
+  <div class="nav-badge">Hyderabad Stories Report</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow-2"></div>
+  <div class="hero-scroll">Scroll</div>
+  <div class="hero-eyebrow">
+    <div class="hero-eyebrow-line"></div>
+    <span>Crearelabs × Hyderabad Stories — Full Digital Audit</span>
+  </div>
+  <div class="hero-headline">
+    Full Digital<br>
+    <span class="accent">Audit &</span><br>
+    <span class="gold">Growth Plan</span>
+  </div>
+  <p class="hero-sub">A comprehensive audit of your Instagram, Facebook, Website SEO, Ad Accounts — with a detailed growth strategy from the Crearelabs team.</p>
+  <div class="hero-stats">
+    <div>
+      <div class="hero-stat-num">89<span>↓</span></div>
+      <div class="hero-stat-label">IG Followers</div>
+    </div>
+    <div>
+      <div class="hero-stat-num">23<span>↓</span></div>
+      <div class="hero-stat-label">FB Followers</div>
+    </div>
+    <div>
+      <div class="hero-stat-num">4.8<span>★</span></div>
+      <div class="hero-stat-label">Google Rating</div>
+    </div>
+    <div>
+      <div class="hero-stat-num">500<span>+</span></div>
+      <div class="hero-stat-label">Google Reviews</div>
+    </div>
+    <div>
+      <div class="hero-stat-num">0<span>!</span></div>
+      <div class="hero-stat-label">Active Meta Ads</div>
+    </div>
+  </div>
+  <div class="hero-badge">
+    <div class="hero-badge-inner">
+      <strong>May<br>2026</strong>
+      Audit<br>Report
+    </div>
+  </div>
+</section>
+
+<!-- CRISIS: META ADS BLOCKED -->
+<section class="section section-dark" id="crisis">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-label">🚨 Priority #1 — Critical Issue</div>
+      <h2 class="section-title light">Meta Ads <span class="italic">Account</span><br>Blocked</h2>
+    </div>
+    <p class="section-desc">The Facebook & Instagram advertising account is disabled. No paid reach on either platform until this is resolved. This is the first thing we fix.</p>
+  </div>
+
+  <div class="critical-alert reveal">
+    <div class="alert-tag"><div class="pulse-dot"></div> ACCOUNT DISABLED</div>
+    <div class="alert-title">Your Meta Ads Are <span>Completely Stopped</span></div>
+    <p class="alert-desc">Every day without Meta Ads means lost visibility, lost orders, and lost revenue — especially on weekends when restaurant footfall peaks. Hyderabad Stories cannot reach new customers in Cockeysville, Timonium, Hunt Valley, or Baltimore until this is fixed. Crearelabs will handle the full recovery process.</p>
+    <div class="tag-row">
+      <span class="tag tag-red">Zero Paid Reach</span>
+      <span class="tag tag-red">Instagram Ads Down</span>
+      <span class="tag tag-red">Facebook Ads Down</span>
+      <span class="tag tag-gold">Recoverable</span>
+      <span class="tag tag-green">Crearelabs Handles This</span>
+    </div>
+  </div>
+
+  <h3 style="color:white; font-family:'Playfair Display',serif; font-size:22px; font-weight:900; margin-bottom:24px;" class="reveal">Common Reasons Accounts Get Blocked</h3>
+  <div class="steps-grid reveal" style="margin-bottom:48px;">
+    <div class="step-card">
+      <div class="step-num">REASON 01</div>
+      <div class="step-title">Policy Violations in Ad Copy</div>
+      <div class="step-body">Misleading claims, prohibited language, or restricted content in ads. Even small words like "guaranteed" can trigger Meta's automated system. 3 consecutive rejected ads = automatic disable.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">REASON 02</div>
+      <div class="step-title">Payment Method Issues</div>
+      <div class="step-body">40% of all disabled Meta accounts are payment-related. A failed card charge, expired card, or billing address mismatch triggers automatic account hold.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">REASON 03</div>
+      <div class="step-title">Unverified Business Manager</div>
+      <div class="step-body">Meta requires Business Verification (govt ID or business documents) for accounts that want to run ads. Without this, accounts get flagged as suspicious.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">REASON 04</div>
+      <div class="step-title">New Account — Sudden High Spend</div>
+      <div class="step-body">New ad accounts that immediately spend large amounts look fraudulent to Meta's algorithm. Spend should be scaled gradually from $5/day upward.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">REASON 05</div>
+      <div class="step-title">Suspicious Login Activity</div>
+      <div class="step-body">Logging in from different locations, multiple IP addresses, or devices without 2FA enabled triggers Meta's security system automatically.</div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">REASON 06</div>
+      <div class="step-title">Automated System Error</div>
+      <div class="step-body">95% of Meta account restrictions are triggered by automated bots, not humans. Many are false positives that are resolved through the proper appeal process.</div>
+    </div>
+  </div>
+
+  <h3 style="color:white; font-family:'Playfair Display',serif; font-size:22px; font-weight:900; margin-bottom:24px;" class="reveal">Crearelabs 5-Step Recovery Plan</h3>
+  <div class="steps-grid reveal">
+    <div class="step-card">
+      <div class="step-num">STEP 01 — DIAGNOSE</div>
+      <div class="step-title">Identify the Exact Reason</div>
+      <div class="step-body">
+        <ul>
+          <li>Go to Meta Business Support Home</li>
+          <li>Check "Account Status Overview"</li>
+          <li>Read the exact violation notice</li>
+          <li>Identify which asset is blocked: Business Manager, Ad Account, or Page</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">STEP 02 — FIX ROOT CAUSE</div>
+      <div class="step-title">Resolve Before Appealing</div>
+      <div class="step-body">
+        <ul>
+          <li>If payment: Add new valid credit card, clear balance</li>
+          <li>If policy: Remove or edit violating ad creative</li>
+          <li>If identity: Enable Two-Factor Authentication</li>
+          <li>If verification: Submit govt ID or business license</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">STEP 03 — APPEAL</div>
+      <div class="step-title">Submit Professional Appeal</div>
+      <div class="step-body">
+        <ul>
+          <li>Business Support Home → Select account → "Request Review"</li>
+          <li>Include: Business Manager ID, Ad Account ID, date of restriction</li>
+          <li>Write clear appeal explaining corrective steps taken</li>
+          <li>Attach: Business license, govt ID, compliance screenshots</li>
+          <li>Must submit within 180 days of restriction</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">STEP 04 — MONITOR</div>
+      <div class="step-title">Track & Follow Up</div>
+      <div class="step-body">
+        <ul>
+          <li>Monitor "Cases" section in Business Support Home</li>
+          <li>Most cases reviewed within 48–72 hours</li>
+          <li>Do NOT submit multiple appeals — delays the process</li>
+          <li>Be ready to provide additional info if Meta requests it</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step-card">
+      <div class="step-num">STEP 05 — REBUILD</div>
+      <div class="step-title">If Denied — Escalate or Rebuild</div>
+      <div class="step-body">
+        <ul>
+          <li>Re-appeal with new evidence (not same appeal twice)</li>
+          <li>Contact Meta Support team directly via help menu</li>
+          <li>As last resort: New Business Manager (only after exhausting all appeals)</li>
+          <li>Crearelabs sets up proper verified account structure from scratch</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step-card" style="border-color: rgba(201,168,76,0.3); background: rgba(201,168,76,0.05);">
+      <div class="step-num" style="color:var(--cl-gold);">ONGOING — PREVENTION</div>
+      <div class="step-title">Stop It Happening Again</div>
+      <div class="step-body">
+        <ul>
+          <li>All ad copy reviewed against Meta's 120+ policy parameters before launch</li>
+          <li>Maintain 2–3 payment methods from different issuers</li>
+          <li>Scale ad spend gradually: $5 → $10 → $20/day</li>
+          <li>Weekly Account Quality Dashboard checks</li>
+          <li>Business Verification completed and maintained</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTAGRAM AUDIT -->
+<section class="section" id="instagram">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-label">📸 Social Audit 01</div>
+      <h2 class="section-title">Instagram <span class="italic">Deep Audit</span></h2>
+    </div>
+    <p class="section-desc">@hyderabad_stories_cockeysville — Current state, detailed issues, and the complete Crearelabs improvement plan.</p>
+  </div>
+
+  <div class="audit-grid reveal">
+    <div class="audit-score-card score-red">
+      <div class="score-label">Overall Score</div>
+      <div class="score-platform">Instagram</div>
+      <div class="score-circle">22</div>
+      <div style="font-size:12px; color:var(--warn); font-weight:700; margin-bottom:16px;">CRITICAL — Needs Immediate Work</div>
+      <div class="score-items">
+        <div class="score-item"><span class="score-item-label">Followers</span><span class="score-item-val val-red">89</span></div>
+        <div class="score-item"><span class="score-item-label">Following</span><span class="score-item-val">61</span></div>
+        <div class="score-item"><span class="score-item-label">Total Posts</span><span class="score-item-val">39</span></div>
+        <div class="score-item"><span class="score-item-label">Follower Ratio</span><span class="score-item-val val-orange">1.46:1</span></div>
+        <div class="score-item"><span class="score-item-label">Est. Post Reach</span><span class="score-item-val val-red">30–80</span></div>
+      </div>
+    </div>
+    <div class="audit-score-card score-orange">
+      <div class="score-label">Content Score</div>
+      <div class="score-platform">Presence</div>
+      <div class="score-circle">38</div>
+      <div style="font-size:12px; color:var(--mid); font-weight:700; margin-bottom:16px;">WEAK — Strategy Missing</div>
+      <div class="score-items">
+        <div class="score-item"><span class="score-item-label">Reels Strategy</span><span class="score-item-val val-red">None</span></div>
+        <div class="score-item"><span class="score-item-label">Story Highlights</span><span class="score-item-val val-orange">Partial</span></div>
+        <div class="score-item"><span class="score-item-label">Posting Frequency</span><span class="score-item-val val-orange">Irregular</span></div>
+        <div class="score-item"><span class="score-item-label">Brand Aesthetic</span><span class="score-item-val val-orange">Inconsistent</span></div>
+        <div class="score-item"><span class="score-item-label">CTA in Bio</span><span class="score-item-val val-red">Missing</span></div>
+      </div>
+    </div>
+    <div class="audit-score-card score-green">
+      <div class="score-label">Brand Foundation</div>
+      <div class="score-platform">Strengths</div>
+      <div class="score-circle">72</div>
+      <div style="font-size:12px; color:var(--ok); font-weight:700; margin-bottom:16px;">GOOD — Strong Base to Build On</div>
+      <div class="score-items">
+        <div class="score-item"><span class="score-item-label">Google Rating</span><span class="score-item-val val-green">4.8 ★</span></div>
+        <div class="score-item"><span class="score-item-label">Google Reviews</span><span class="score-item-val val-green">500+</span></div>
+        <div class="score-item"><span class="score-item-label">Product Quality</span><span class="score-item-val val-green">Excellent</span></div>
+        <div class="score-item"><span class="score-item-label">Website</span><span class="score-item-val val-green">Good</span></div>
+        <div class="score-item"><span class="score-item-label">BYOB USP</span><span class="score-item-val val-green">Unique</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-block reveal">
+    <div class="detail-block-header">
+      <div class="detail-block-icon icon-instagram">📸</div>
+      <div>
+        <div class="detail-block-title">Bio & Profile Analysis</div>
+        <div class="detail-block-desc">Current bio: "🍽️ Authentic South Indian Cuisine 🌟 A taste of elegance 🍲 Dine, celebrate, savor 📍9832 York rd, Cockeysville, MD 21030"</div>
+      </div>
+    </div>
+    <div class="issue-list">
+      <div class="issue-item issue-critical">
+        <span class="issue-badge badge-critical">Critical</span>
+        <span class="issue-text"><strong>No Call-to-Action in Bio:</strong> There is no "Order Now", "Book a Table", or link prompt. Every visitor who lands on the profile has no clear next step. This is the single biggest conversion killer on Instagram.</span>
+      </div>
+      <div class="issue-item issue-critical">
+        <span class="issue-badge badge-critical">Critical</span>
+        <span class="issue-text"><strong>No SEO Keywords in Bio:</strong> Bio doesn't contain "Biryani", "Hyderabadi", "Maryland", "Indian Restaurant" — the exact words people search for. Instagram's search engine uses bio text to surface accounts in discovery.</span>
+      </div>
+      <div class="issue-item issue-warning">
+        <span class="issue-badge badge-warning">Warning</span>
+        <span class="issue-text"><strong>Username Too Long:</strong> @hyderabad_stories_cockeysville is 34 characters — hard to tag, hard to remember, hard to type. Competitors get tagged more often simply because their handles are shorter.</span>
+      </div>
+      <div class="issue-item issue-warning">
+        <span class="issue-badge badge-warning">Warning</span>
+        <span class="issue-text"><strong>No Unique Selling Point Stated:</strong> Why Hyderabad Stories over the 5 other Indian restaurants in the area? The bio doesn't mention BYOB, 4.8 stars, 500+ reviews, authentic Dum Biryani, Cockeysville's only Hyderabadi restaurant — none of these differentiators are visible.</span>
+      </div>
+      <div class="issue-item issue-warning">
+        <span class="issue-badge badge-warning">Warning</span>
+        <span class="issue-text"><strong>Link in Bio Not Optimized:</strong> Should point to a Linktree or smart page with: Order Online, Menu, Reservations, BYOB Info, Google Reviews. A single website link wastes this prime real estate.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-block reveal">
+    <div class="detail-block-header">
+      <div style="flex: 1">
+        <div class="detail-block-title">Reach, Engagement & Performance</div>
+        <div class="detail-block-desc">With 89 followers and no reels strategy, the account is operating well below its potential. Here's the detailed breakdown.</div>
+      </div>
+    </div>
+    <div class="metrics-row">
+      <div class="metric-pill">
+        <div class="metric-pill-val val-red">~50</div>
+        <div class="metric-pill-label">Est. Reach Per Post</div>
+      </div>
+      <div class="metric-pill">
+        <div class="metric-pill-val val-red">1–5</div>
+        <div class="metric-pill-label">Avg Likes Per Post</div>
+      </div>
+      <div class="metric-pill">
+        <div class="metric-pill-val val-red">0–1</div>
+        <div class="metric-pill-label">Avg Comments</div>
+      </div>
+      <div class="metric-pill">
+        <div class="metric-pill-val val-red">0</div>
+        <div class="metric-pill-label">Active Reels</div>
+      </div>
+      <div class="metric-pill">
+        <div class="metric-pill-val val-orange">39</div>
+        <div class="metric-pill-label">Total Posts</div>
+      </div>
+      <div class="metric-pill">
+        <div class="metric-pill-val val-red">0</div>
+        <div class="metric-pill-label">UGC Posts Tagged</div>
+      </div>
+    </div>
+    <div class="issue-list">
+      <div class="issue-item issue-critical">
+        <span class="issue-badge badge-critical">Critical</span>
+        <span class="issue-text"><strong>Zero Reels Strategy:</strong> Instagram Reels get 3x more reach than static posts and are pushed heavily by the algorithm to non-followers. A restaurant with NO reels is invisible to the 95% of potential customers who don't follow them yet. A single well-made biryani reveal reel can reach 5,000–50,000+ people organically.</span>
+      </div>
+      <div class="issue-item issue-critical">
+        <span class="issue-badge badge-critical">Critical</span>
+        <span class="issue-text"><strong>No Location Tagging Strategy:</strong> Every post must use location tags — both the restaurant location AND nearby popular areas (Timonium, Hunt Valley, Baltimore). Location tags make posts discoverable to people browsing that area.</span>
+      </div>
+      <div class="issue-item issue-warning">
+        <span class="issue-badge badge-warning">Warning</span>
+        <span class="issue-text"><strong>Generic Hashtag Strategy:</strong> Using massive hashtags like #indianfood (35M posts) or #biryani (20M posts) means you are invisible. The content gets buried in seconds. Effective strategy: mix of hyper-local tags (#CockeysvilleMD, #MarylandFoodie, #BaltimoreEats), niche tags (#HyderabadiFood, #DumBiryani), and size-appropriate tags (under 500K posts).</span>
+      </div>
+      <div class="issue-item issue-warning">
+        <span class="issue-badge badge-warning">Warning</span>
+        <span class="issue-text"><strong>No Interactive Content:</strong> Stories with polls ("Which biryani do you prefer?"), quizzes, "this or that" food comparisons, and countdown timers for events are the highest-engagement formats on Instagram. None visible currently.</span>
+      </div>
+      <div class="issue-item issue-warning">
+        <span class="issue-badge badge-warning">Warning</span>
+        <span class="issue-text"><strong>No User-Generated Content Campaign:</strong> With 500+ Google reviewers, many are clearly happy customers — but there's no system encouraging them to post on Instagram and tag the restaurant. One customer's food photo can reach their 300–1,000 followers for free.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-block reveal">
+    <div style="font-family:'Playfair Display',serif; font-size:24px; font-weight:900; margin-bottom:24px;">Crearelabs Instagram Growth Plan</div>
+    <div class="fix-list">
+      <div class="fix-item"><div class="fix-icon">✓</div><div><strong>Bio Rewrite</strong> — Add power keywords, BYOB USP, CTA "Order Now", 4.8⭐ mention, optimized Linktree</div></div>
+      <div class="fix-item"><div class="fix-icon">✓</div><div><strong>Reels Strategy</strong> — Weekly cooking reels: biryani dum reveal, behind-the-scenes kitchen, customer reactions (highest organic reach format)</div></div>
+      <div class="fix-item"><div class="fix-icon">✓</div><div><strong>Content Calendar</strong> — 15–50 posts/month (based on plan) delivered 5 days in advance for approval, covering food, culture, promotions, staff</div></div>
+      <div class="fix-item"><div class="fix-icon">✓</div><div><strong>Hashtag Research</strong> — Custom hyper-local + niche hashtag set updated monthly: #CockeysvilleMD, #MarylandFoodie, #HyderabadiFood, #DumBiryani etc.</div></div>
+      <div class="fix-item"><div class="fix-icon">✓</div><div><strong>Story Highlights Setup</strong> — Organized: Menu, Reviews, BYOB, Events, About Us, Order Online</div></div>
+      <div class="fix-item"><div class="fix-icon">✓</div><div><strong>UGC Campaign</strong> — "Tag us in your biryani moment for a chance to be featured" table cards + social push</div></div>
+      <div class="fix-item"><div class="fix-icon">✓</div><div><strong>Engagement Management</strong> — Every comment and DM responded to within 2–4 hours (builds algorithmic trust + community)</div></div>
+      <div class="fix-item"><div class="fix-icon">✓</div><div><strong>Influencer Outreach</strong> — Identify 3–5 local Maryland food bloggers for collab reels and story features</div></div>
+      <div class="fix-item"><div class="fix-icon">✓</div><div><strong>Profile Switch</strong> — Convert to Creator/Business profile with full contact info, WhatsApp link, Order button</div></div>
+      <div class="fix-item"><div class="fix-icon">✓</div><div><strong>Seasonal Campaigns</strong> — Diwali, Eid, Ugadi, Valentine's Day, Mother's Day, BYOB Friday campaigns planned in advance</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FACEBOOK AUDIT -->
+<section class="section section-alt" id="facebook">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-label">👥 Social Audit 02</div>
+      <h2 class="section-title">Facebook <span class="italic">Deep Audit</span></h2>
+    </div>
+    <p class="section-desc">Facebook Page ID: 61574558502131 — A nearly abandoned page with a critical duplicate problem that's splitting authority.</p>
+  </div>
+
+  <div class="detail-block reveal">
+    <div class="detail-block-header">
+      <div class="detail-block-icon icon-facebook">f</div>
+      <div>
+        <div class="detail-block-title">Facebook Page Status</div>
+        <div class="detail-block-desc">Current numbers reveal a page that is technically live but practically invisible and untrusted by the Facebook algorithm.</div>
+      </div>
+    </div>
+    <div class="metrics-row">
+      <div class="metric-pill">
+        <div class="metric-pill-val val-red">23</div>
+        <div class="metric-pill-label">Page Followers</div>
+      </div>
+      <div class="metric-pill">
+        <div class="metric-pill-val val-red">0</div>
+        <div class="metric-pill-label">FB Reviews</div>
+      </div>
+      <div class="metric-pill">
+        <div class="metric-pill-val val-red">0</div>
+        <div class="metric-pill-label">Page Rating</div>
+      </div>
+      <div class="metric-pill">
+        <div class="metric-pill-val val-red">0</div>
+        <div class="metric-pill-label">Events Created</div>
+      </div>
+      <div class="metric-pill">
+        <div class="metric-pill-val val-red">0</div>
+        <div class="metric-pill-label">Following Count</div>
+      </div>
+      <div class="metric-pill">
+        <div class="metric-pill-val val-red">2</div>
+        <div class="metric-pill-label">Duplicate Pages</div>
+      </div>
+    </div>
+    <div class="issue-list">
+      <div class="issue-item issue-critical">
+        <span class="issue-badge badge-critical">Critical</span>
+        <span class="issue-text"><strong>Duplicate Facebook Pages Detected:</strong> There are at least 2 Facebook pages for Hyderabad Stories — one linked from the website (ID: 61574558502131) and another (ID: 61575050207649) with 23 followers. This splits authority, confuses customers, and both pages appear weak. One must be merged into the other and the duplicate removed.</span>
+      </div>
+      <div class="issue-item issue-critical">
+        <span class="issue-badge badge-critical">Critical</span>
+        <span class="issue-text"><strong>Zero Facebook Reviews:</strong> Potential customers who find the Facebook page see absolutely zero social proof. Compare this to 500+ Google reviews and 4.8 stars — the Facebook page doesn't reflect the restaurant's true reputation at all. This is a massive trust gap.</span>
+      </div>
+      <div class="issue-item issue-critical">
+        <span class="issue-badge badge-critical">Critical</span>
+        <span class="issue-text"><strong>No CTA Button Configured:</strong> Facebook Business pages can show "Order Food", "Call Now", or "Get Directions" as a prominent action button. Currently this is either missing or not optimized — every page visitor has no clear action to take.</span>
+      </div>
+      <div class="issue-item issue-warning">
+        <span class="issue-badge badge-warning">Warning</span>
+        <span class="issue-text"><strong>Zero Facebook Events:</strong> Facebook Events are one of the most powerful FREE organic reach tools available. A "Friday BYOB Night" or "Diwali Special Dinner" event post gets shown to friends of attendees and to people interested in dining in the area — completely free. Not a single event has been created.</span>
+      </div>
+      <div class="issue-item issue-warning">
+        <span class="issue-badge badge-warning">Warning</span>
+        <span class="issue-text"><strong>Messenger Response Rate Unmanaged:</strong> Facebook publicly displays a page's average response time. "Very slow response" shown on a page immediately reduces trust and message volume. An automated Messenger greeting + quick-reply menu for hours, menu, and reservations should be set up immediately.</span>
+      </div>
+      <div class="issue-item issue-warning">
+        <span class="issue-badge badge-warning">Warning</span>
+        <span class="issue-text"><strong>No Pinned Post:</strong> The first thing visitors see on the page should be a pinned post with the menu link, special offer, or Google reviews screenshot. Currently there is nothing guiding the visitor.</span>
+      </div>
+      <div class="issue-item issue-warning">
+        <span class="issue-badge badge-warning">Warning</span>
+        <span class="issue-text"><strong>Not Engaging with Local Community Groups:</strong> Baltimore and Cockeysville have active Facebook community and food groups with thousands of members. Sharing menu updates, events, or food photos into these groups (done authentically) drives significant free local traffic.</span>
+      </div>
+    </div>
+    <div class="fix-list" style="margin-top:28px;">
+      <div class="fix-item"><div class="fix-icon">✓</div><div><strong>Merge Duplicate Pages</strong> — Consolidate into one verified, fully optimized official page</div></div>
+      <div class="fix-item"><div class="fix-icon">✓</div><div><strong>Complete Profile Setup</strong> — Cover photo, CTA button ("Order Food"), address, hours, full menu upload</div></div>
+      <div class="fix-item"><div class="fix-icon">✓</div><div><strong>Review Generation Campaign</strong> — QR code at tables, post-visit email/WhatsApp prompts to leave Facebook + Google reviews</div></div>
+      <div class="fix-item"><div class="fix-icon">✓</div><div><strong>Facebook Events</strong> — Create weekly/monthly events: BYOB Nights, Dum Biryani Friday, Cultural Dinner Nights, Catering Open Days</div></div>
+      <div class="fix-item"><div class="fix-icon">✓</div><div><strong>Messenger Automation</strong> — Auto-reply with hours, menu link, WhatsApp number, booking link for every DM received</div></div>
+      <div class="fix-item"><div class="fix-icon">✓</div><div><strong>Cross-Post from Instagram</strong> — All Instagram content automatically repurposed for Facebook to maintain consistent presence</div></div>
+      <div class="fix-item"><div class="fix-icon">✓</div><div><strong>Community Group Strategy</strong> — Regular authentic participation in Cockeysville, Timonium, Baltimore food & community groups</div></div>
+      <div class="fix-item"><div class="fix-icon">✓</div><div><strong>Check-In Campaign</strong> — In-store signs: "Check in on Facebook, get 10% off your next visit" — rapidly builds social proof</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- WEBSITE SEO AUDIT -->
+<section class="section" id="website">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-label">🌐 Technical Audit 03</div>
+      <h2 class="section-title">Website <span class="italic">SEO Audit</span></h2>
+    </div>
+    <p class="section-desc">hydstories.com — Built on Next.js, good structure, but missing critical SEO elements that are leaving Google traffic on the table every single day.</p>
+  </div>
+
+  <div class="seo-grid reveal" style="margin-bottom:32px;">
+    <div class="seo-check">
+      <div class="seo-check-icon check-pass">✓</div>
+      <div>
+        <div class="seo-check-title">Mobile Responsive (Next.js)</div>
+        <div class="seo-check-desc">Site is built on Next.js — automatically mobile-friendly with fast server-side rendering. Good technical foundation.</div>
+      </div>
+    </div>
+    <div class="seo-check">
+      <div class="seo-check-icon check-fail">✗</div>
+      <div>
+        <div class="seo-check-title">Schema Markup — Missing</div>
+        <div class="seo-check-desc">No LocalBusiness, Restaurant, or BreadcrumbList schema. These are FREE structured data that make Google show star ratings, hours, and menu directly in search results.</div>
+      </div>
+    </div>
+    <div class="seo-check">
+      <div class="seo-check-icon check-pass">✓</div>
+      <div>
+        <div class="seo-check-title">OG Tags & Twitter Cards Present</div>
+        <div class="seo-check-desc">Open Graph and Twitter meta tags are present, meaning links shared on social media show a proper preview card with image and description.</div>
+      </div>
+    </div>
+    <div class="seo-check">
+      <div class="seo-check-icon check-fail">✗</div>
+      <div>
+        <div class="seo-check-title">No Blog Section</div>
+        <div class="seo-check-desc">A blog is the #1 free SEO traffic driver. "Best Biryani in Maryland", "What is Hyderabadi Cuisine" — these articles rank on Google and bring in organic visitors every day without ad spend.</div>
+      </div>
+    </div>
+    <div class="seo-check">
+      <div class="seo-check-icon check-warn">~</div>
+      <div>
+        <div class="seo-check-title">Meta Description — Too Generic</div>
+        <div class="seo-check-desc">Current: "Experience authentic Hyderabadi cuisine in Cockeysville, MD." Missing: "best Indian restaurant", "biryani near me", "BYOB Indian restaurant Maryland" — high-intent search phrases.</div>
+      </div>
+    </div>
+    <div class="seo-check">
+      <div class="seo-check-icon check-fail">✗</div>
+      <div>
+        <div class="seo-check-title">No FAQ Schema</div>
+        <div class="seo-check-desc">FAQ sections with schema markup appear as expandable results directly in Google's search page — doubling the visual space your result takes up. None implemented.</div>
+      </div>
+    </div>
+    <div class="seo-check">
+      <div class="seo-check-icon check-pass">✓</div>
+      <div>
+        <div class="seo-check-title">Google Reviews Widget (4.8★ / 500+)</div>
+        <div class="seo-check-desc">Excellent social proof displayed on homepage. This is a major trust signal and conversion driver — well utilized.</div>
+      </div>
+    </div>
+    <div class="seo-check">
+      <div class="seo-check-icon check-warn">~</div>
+      <div>
+        <div class="seo-check-title">Page Speed — Likely Slow on Mobile</div>
+        <div class="seo-check-desc">Images are loaded at w=3840 (4K resolution). Even with Next.js optimization, this is excessive for mobile users and likely hurts Core Web Vitals LCP score — a direct Google ranking factor.</div>
+      </div>
+    </div>
+    <div class="seo-check">
+      <div class="seo-check-icon check-fail">✗</div>
+      <div>
+        <div class="seo-check-title">No Backlink Building Strategy</div>
+        <div class="seo-check-desc">Listed on Yelp, TripAdvisor, MapQuest (good), but zero local Maryland food blog features, no Baltimore news coverage, no Indian community website mentions. Backlinks are the #1 ranking factor in Google.</div>
+      </div>
+    </div>
+    <div class="seo-check">
+      <div class="seo-check-icon check-fail">✗</div>
+      <div>
+        <div class="seo-check-title">No Location Service Pages</div>
+        <div class="seo-check-desc">No dedicated pages for "Indian Restaurant Timonium", "Catering Baltimore MD", "Biryani Hunt Valley" — location+service combo pages are critical for ranking in multiple nearby areas.</div>
+      </div>
+    </div>
+    <div class="seo-check">
+      <div class="seo-check-icon check-warn">~</div>
+      <div>
+        <div class="seo-check-title">Per-Page SEO — Minimal</div>
+        <div class="seo-check-desc">Menu, Catering, Events, Gallery pages all share the same generic meta title prefix. Each page needs unique, keyword-optimized title and description targeting different search intents.</div>
+      </div>
+    </div>
+    <div class="seo-check">
+      <div class="seo-check-icon check-pass">✓</div>
+      <div>
+        <div class="seo-check-title">Delivery Platforms Linked</div>
+        <div class="seo-check-desc">DoorDash, UberEats, Grubhub, Menufy all linked from homepage. Good for conversion but profiles on these platforms also need photo and description optimization.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-block reveal">
+    <div style="font-family:'Playfair Display',serif; font-size:24px; font-weight:900; margin-bottom:24px;">Keyword Gap Analysis</div>
+    <div class="table-wrapper">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Keyword</th>
+            <th>Monthly Searches (Est.)</th>
+            <th>Current Rank</th>
+            <th>Target</th>
+            <th>Priority</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Indian restaurant Cockeysville MD</strong></td>
+            <td>200–400/mo</td>
+            <td style="color:var(--warn)">Unranked / Page 3+</td>
+            <td>Page 1 #1–3</td>
+            <td><span class="issue-badge badge-critical">HIGH</span></td>
+          </tr>
+          <tr>
+            <td><strong>Biryani near me (Cockeysville area)</strong></td>
+            <td>500–1,000/mo</td>
+            <td style="color:var(--warn)">Not ranking</td>
+            <td>Page 1 Top 5</td>
+            <td><span class="issue-badge badge-critical">HIGH</span></td>
+          </tr>
+          <tr>
+            <td><strong>Best Indian restaurant Maryland</strong></td>
+            <td>300–600/mo</td>
+            <td style="color:var(--warn)">Not ranking</td>
+            <td>Page 1</td>
+            <td><span class="issue-badge badge-critical">HIGH</span></td>
+          </tr>
+          <tr>
+            <td><strong>BYOB Indian restaurant Maryland</strong></td>
+            <td>100–200/mo</td>
+            <td style="color:var(--warn)">Not ranking</td>
+            <td>Page 1 #1</td>
+            <td><span class="issue-badge badge-warning">MEDIUM</span></td>
+          </tr>
+          <tr>
+            <td><strong>Indian catering Baltimore</strong></td>
+            <td>200–400/mo</td>
+            <td style="color:var(--warn)">Not ranking</td>
+            <td>Page 1</td>
+            <td><span class="issue-badge badge-warning">MEDIUM</span></td>
+          </tr>
+          <tr>
+            <td><strong>Hyderabadi cuisine Maryland</strong></td>
+            <td>50–150/mo</td>
+            <td style="color:var(--mid)">Page 2–3</td>
+            <td>Page 1 #1–2</td>
+            <td><span class="issue-badge badge-warning">MEDIUM</span></td>
+          </tr>
+          <tr>
+            <td><strong>South Indian food Hunt Valley</strong></td>
+            <td>100–200/mo</td>
+            <td style="color:var(--warn)">Not ranking</td>
+            <td>Page 1</td>
+            <td><span class="issue-badge badge-info">GROWTH</span></td>
+          </tr>
+          <tr>
+            <td><strong>Dum biryani near me</strong></td>
+            <td>400–800/mo</td>
+            <td style="color:var(--warn)">Not ranking</td>
+            <td>Page 1 via blog</td>
+            <td><span class="issue-badge badge-info">GROWTH</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="detail-block reveal">
+    <div style="font-family:'Playfair Display',serif; font-size:24px; font-weight:900; margin-bottom:24px;">Crearelabs SEO Plan</div>
+    <div class="fix-list">
+      <div class="fix-item"><div class="fix-icon">✓</div><div><strong>Schema Markup</strong> — Add LocalBusiness + Restaurant + Review + FAQ schema. Makes Google show stars, hours, menu items directly in search results.</div></div>
+      <div class="fix-item"><div class="fix-icon">✓</div><div><strong>Keyword-Optimized Meta Tags</strong> — Every page gets unique, researched title and meta description targeting different search intent.</div></div>
+      <div class="fix-item"><div class="fix-icon">✓</div><div><strong>Blog Setup</strong> — Monthly SEO articles: "Best Biryani in Maryland", "BYOB Restaurants Cockeysville", "What is Hyderabadi Cuisine", "Indian Catering Baltimore"</div></div>
+      <div class="fix-item"><div class="fix-icon">✓</div><div><strong>Local Citation Building</strong> — Consistent NAP (Name, Address, Phone) across 30+ directories: Yelp, TripAdvisor, Foursquare, Apple Maps, Bing Places, etc.</div></div>
+      <div class="fix-item"><div class="fix-icon">✓</div><div><strong>Google Business Domination</strong> — Weekly GBP posts, photo uploads, Q&A management, service updates, menu sync</div></div>
+      <div class="fix-item"><div class="fix-icon">✓</div><div><strong>Page Speed Fixes</strong> — Optimize image sizes, improve Core Web Vitals (LCP, FID, CLS) for better Google ranking signals</div></div>
+      <div class="fix-item"><div class="fix-icon">✓</div><div><strong>Backlink Outreach</strong> — Pitch to Maryland food blogs, Baltimore lifestyle sites, Indian community directories, local news</div></div>
+      <div class="fix-item"><div class="fix-icon">✓</div><div><strong>Google Maps Embed</strong> — Add to Contact page with structured address markup for stronger local SEO signal</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- AD BUDGET SECTION -->
+<section class="section section-dark" id="ads">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-label">💰 Paid Media Strategy</div>
+      <h2 class="section-title light">Ad Budget <span class="italic">Analysis</span></h2>
+    </div>
+    <p class="section-desc" style="color:rgba(255,255,255,0.4)">Meta Ads ₹10,000 + Google Ads ₹10,000 per month — realistic projections for Cockeysville, MD market with detailed campaign structures.</p>
+  </div>
+
+  <div class="budget-grid reveal">
+    <div class="budget-card budget-meta">
+      <div style="font-size:11px; font-family:'JetBrains Mono',monospace; letter-spacing:1.5px; color:rgba(255,255,255,0.35); text-transform:uppercase; margin-bottom:8px;">Platform 01</div>
+      <div class="budget-platform-name">Meta Ads</div>
+      <div class="budget-spend">
+        <div class="budget-amount">₹10,000</div>
+        <div class="budget-currency">/ month (~$120 USD)</div>
+      </div>
+      <div class="budget-metrics">
+        <div class="budget-row">
+          <span class="budget-row-label">Daily Spend</span>
+          <span class="budget-row-val">~$4/day</span>
+        </div>
+        <div class="budget-row">
+          <span class="budget-row-label">Est. Monthly Reach</span>
+          <span class="budget-row-val">3,500–5,000 people</span>
+        </div>
+        <div class="budget-row">
+          <span class="budget-row-label">Est. Impressions</span>
+          <span class="budget-row-val">10,000–14,000</span>
+        </div>
+        <div class="budget-row">
+          <span class="budget-row-label">Est. Clicks</span>
+          <span class="budget-row-val">80–130/month</span>
+        </div>
+        <div class="budget-row">
+          <span class="budget-row-label">Est. Inquiries/Leads</span>
+          <span class="budget-row-val">4–8/month</span>
+        </div>
+        <div class="budget-row">
+          <span class="budget-row-label">Target Radius</span>
+          <span class="budget-row-val">5–10 miles</span>
+        </div>
+      </div>
+      <div class="budget-disclaimer">⚠️ Restaurant CPM in the US averages $8.75. $120/month is a starter/learning budget. Meaningful scaling begins at $250–$500/month from Month 2.</div>
+    </div>
+    <div class="budget-card budget-google">
+      <div style="font-size:11px; font-family:'JetBrains Mono',monospace; letter-spacing:1.5px; color:rgba(255,255,255,0.35); text-transform:uppercase; margin-bottom:8px;">Platform 02</div>
+      <div class="budget-platform-name">Google Ads</div>
+      <div class="budget-spend">
+        <div class="budget-amount">₹10,000</div>
+        <div class="budget-currency">/ month (~$120 USD)</div>
+      </div>
+      <div class="budget-metrics">
+        <div class="budget-row">
+          <span class="budget-row-label">Daily Spend</span>
+          <span class="budget-row-val">~$4/day</span>
+        </div>
+        <div class="budget-row">
+          <span class="budget-row-label">Est. Impressions</span>
+          <span class="budget-row-val">1,500–3,000/month</span>
+        </div>
+        <div class="budget-row">
+          <span class="budget-row-label">Est. Clicks</span>
+          <span class="budget-row-val">40–80/month</span>
+        </div>
+        <div class="budget-row">
+          <span class="budget-row-label">Est. Avg CPC</span>
+          <span class="budget-row-val">$1.50–$3.00</span>
+        </div>
+        <div class="budget-row">
+          <span class="budget-row-label">Est. Direct Calls</span>
+          <span class="budget-row-val">5–10/month</span>
+        </div>
+        <div class="budget-row">
+          <span class="budget-row-label">Campaign Type</span>
+          <span class="budget-row-val">Search Only</span>
+        </div>
+      </div>
+      <div class="budget-disclaimer">⚠️ Google recommends $15–30/day per campaign for learning data. $4/day is exploratory. Ideal minimum for results: $300–500/month. Focus on high-intent, low-competition long-tail keywords.</div>
+    </div>
+  </div>
+
+  <div class="budget-recommendation reveal" style="margin-bottom:40px;">
+    <div class="budget-rec-title">Crearelabs Honest Assessment & Recommendation</div>
+    <div class="budget-rec-body">
+      ₹10,000/month per platform (~$120 USD) is a <strong>starter/testing budget</strong> for the US market. These budgets are appropriate for <strong>Month 1</strong> — to build the algorithm's learning base, test which creatives and keywords work, and gather real performance data before scaling.<br><br>
+      From <strong>Month 2–3</strong>, we recommend scaling Meta to <strong>$250–$300/month</strong> and Google to <strong>$200–$300/month</strong> based on what the data shows. This level will generate meaningful, consistent leads and footfall. The goal is a <strong>data-driven scale</strong> — not throwing money at untested campaigns.
+    </div>
+  </div>
+
+  <h3 style="color:white; font-family:'Playfair Display',serif; font-size:22px; font-weight:900; margin-bottom:24px;" class="reveal">Recommended Campaign Structure</h3>
+  <div class="ads-structure reveal">
+    <div class="ad-campaign-card">
+      <div class="ad-campaign-num">META ADS — CAMPAIGN 01</div>
+      <div class="ad-campaign-title">Brand Awareness & Reach</div>
+      <div class="ad-campaign-budget">$72/month (60%)</div>
+      <div class="ad-campaign-desc">Video reel of biryani dum reveal or restaurant atmosphere. Target: All adults 22–55 within 8-mile radius. Objective: Video Views / Reach. Build local brand recognition and retargeting pool.</div>
+      <div class="ad-group-list">
+        <div class="ad-group"><span class="ad-group-name">Audience 1</span><span class="ad-group-kw">5mi radius — All dining interest</span></div>
+        <div class="ad-group"><span class="ad-group-name">Audience 2</span><span class="ad-group-kw">Indian food interest — Baltimore</span></div>
+        <div class="ad-group"><span class="ad-group-name">Creatives</span><span class="ad-group-kw">2–3 video reels + 1 carousel</span></div>
+      </div>
+    </div>
+    <div class="ad-campaign-card">
+      <div class="ad-campaign-num">META ADS — CAMPAIGN 02</div>
+      <div class="ad-campaign-title">Traffic & Conversion</div>
+      <div class="ad-campaign-budget">$48/month (40%)</div>
+      <div class="ad-campaign-desc">Drive to Order Online page or "Call Now". Target: Page engagers + Lookalike audience. Objective: Traffic / Leads. Converts interest into actual orders and reservations.</div>
+      <div class="ad-group-list">
+        <div class="ad-group"><span class="ad-group-name">Audience 1</span><span class="ad-group-kw">Page engagers (retargeting)</span></div>
+        <div class="ad-group"><span class="ad-group-name">Audience 2</span><span class="ad-group-kw">LAL of top customers</span></div>
+        <div class="ad-group"><span class="ad-group-name">Creatives</span><span class="ad-group-kw">Food photo carousel + offer</span></div>
+      </div>
+    </div>
+    <div class="ad-campaign-card">
+      <div class="ad-campaign-num">GOOGLE ADS — CAMPAIGN 01</div>
+      <div class="ad-campaign-title">Search — High Intent</div>
+      <div class="ad-campaign-budget">$120/month (100%)</div>
+      <div class="ad-campaign-desc">Single Search campaign, 3 tightly themed ad groups targeting people actively searching for Indian food in the area. Pure high-intent — people ready to order or visit NOW.</div>
+      <div class="ad-group-list">
+        <div class="ad-group"><span class="ad-group-name">Ad Group 1</span><span class="ad-group-kw">Indian food near me</span></div>
+        <div class="ad-group"><span class="ad-group-name">Ad Group 2</span><span class="ad-group-kw">Biryani / Hyderabadi Maryland</span></div>
+        <div class="ad-group"><span class="ad-group-name">Ad Group 3</span><span class="ad-group-kw">Indian catering Baltimore</span></div>
+        <div class="ad-group"><span class="ad-group-name">Ads per group</span><span class="ad-group-kw">2–3 Responsive Search Ads</span></div>
+      </div>
+    </div>
+    <div class="ad-campaign-card" style="border-color:rgba(201,168,76,0.25);">
+      <div class="ad-campaign-num" style="color:var(--cl-gold);">COMBINED — MONTH 1 TARGETS</div>
+      <div class="ad-campaign-title">Expected Monthly Results</div>
+      <div class="ad-campaign-budget" style="color:var(--cl-gold);">₹20,000 Total</div>
+      <div class="ad-campaign-desc">Combined projections for both platforms at current budget levels. These are conservative estimates based on US restaurant market benchmarks.</div>
+      <div class="ad-group-list">
+        <div class="ad-group"><span class="ad-group-name">Combined Reach</span><span class="ad-group-kw" style="color:rgba(255,255,255,0.6)">5,000–8,000 people</span></div>
+        <div class="ad-group"><span class="ad-group-name">Total Clicks</span><span class="ad-group-kw" style="color:rgba(255,255,255,0.6)">120–210 clicks</span></div>
+        <div class="ad-group"><span class="ad-group-name">Direct Calls</span><span class="ad-group-kw" style="color:rgba(255,255,255,0.6)">5–10 calls</span></div>
+        <div class="ad-group"><span class="ad-group-name">Inquiries/Leads</span><span class="ad-group-kw" style="color:rgba(255,255,255,0.6)">9–18 total</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT'S MISSING -->
+<section class="section section-alt">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-label">🔍 Hidden Opportunities</div>
+      <h2 class="section-title">10 Things <span class="italic">You're Missing</span></h2>
+    </div>
+    <p class="section-desc">Beyond social media and ads — additional channels and strategies that Crearelabs will unlock for Hyderabad Stories.</p>
+  </div>
+
+  <div class="gaps-grid reveal">
+    <div class="gap-card">
+      <div class="gap-icon">📧</div>
+      <div class="gap-title">Email Marketing</div>
+      <div class="gap-body">Zero email list being built. Order platforms like Menufy and DoorDash have customer data that should be feeding a CRM. <strong>Email marketing returns $36 for every $1 spent</strong> — the highest ROI channel. Weekly "This Week's Special" emails to 200+ subscribers could generate 20–40 reservations monthly at zero ad cost.</div>
+    </div>
+    <div class="gap-card">
+      <div class="gap-icon">📍</div>
+      <div class="gap-title">Google Business Profile — Underused</div>
+      <div class="gap-body">500+ Google reviews is a <strong>massive untapped asset</strong>. GBP posts (weekly specials, events, new dishes) appear directly in Google search results for FREE. No Q&A management, no regular photo uploads, no weekly posts currently happening. This alone can increase walk-ins by 15–25%.</div>
+    </div>
+    <div class="gap-card">
+      <div class="gap-icon">⭐</div>
+      <div class="gap-title">Reputation Management</div>
+      <div class="gap-body">Yelp: 10 reviews (4.5★), TripAdvisor listed — but no active response strategy. <strong>Every unanswered negative review costs 22% of potential customers.</strong> No system exists to proactively ask happy diners for Yelp + TripAdvisor reviews to match the strong Google presence.</div>
+    </div>
+    <div class="gap-card">
+      <div class="gap-icon">💬</div>
+      <div class="gap-title">WhatsApp Business</div>
+      <div class="gap-body">The South Indian and broader Indian diaspora community in Maryland heavily uses WhatsApp. A <strong>WhatsApp Business catalog</strong> with menu + prices, broadcast lists for weekly specials, and BYOB event announcements could drive significant repeat business from the community audience.</div>
+    </div>
+    <div class="gap-card">
+      <div class="gap-icon">🎥</div>
+      <div class="gap-title">Food Influencer Collaborations</div>
+      <div class="gap-body">One reel by a local Maryland food blogger with 5,000–50,000 followers can match an entire month's ad spend in reach — often for the cost of a free meal. <strong>Baltimore has an active food creator community.</strong> 3–5 targeted collaborations quarterly would massively boost awareness.</div>
+    </div>
+    <div class="gap-card">
+      <div class="gap-icon">🍽️</div>
+      <div class="gap-title">Catering Pipeline Not Marketed</div>
+      <div class="gap-body">The website has a full Catering page but <strong>zero Google Ads targeting "Indian catering Baltimore"</strong>, no Facebook Events for catering open days, no Instagram catering content. Catering = highest revenue per customer — a single corporate order can be worth $500–$5,000. This is the biggest missed revenue opportunity.</div>
+    </div>
+    <div class="gap-card">
+      <div class="gap-icon">🚚</div>
+      <div class="gap-title">Delivery Platform Optimization</div>
+      <div class="gap-body">Listed on DoorDash, UberEats, Grubhub, Menufy — but <strong>profiles likely not fully optimized</strong> with professional photos, keyword-rich descriptions, and promoted items. On DoorDash alone, a fully optimized profile can increase order volume by 30–50% with no additional cost.</div>
+    </div>
+    <div class="gap-card">
+      <div class="gap-icon">🫀</div>
+      <div class="gap-title">Diaspora Community Targeting</div>
+      <div class="gap-body">Large Telugu, Telugu-speaking, and broader South Indian community in Maryland/DC metro area. <strong>Facebook Groups for Indian community, Telugu associations, and Indian professionals</strong> in Maryland are active with thousands of members — zero engagement from Hyderabad Stories currently.</div>
+    </div>
+    <div class="gap-card">
+      <div class="gap-icon">📅</div>
+      <div class="gap-title">Seasonal Campaign Calendar</div>
+      <div class="gap-body">No planned content around high-impact dates: <strong>Diwali, Eid, Ugadi, Sankranti</strong> (cultural) and <strong>Valentine's Day, Mother's Day, Thanksgiving</strong> (American calendar). BYOB angle on Valentine's and date nights is a massive differentiator. Pre-planned campaigns = 3x better performance than reactive posts.</div>
+    </div>
+    <div class="gap-card">
+      <div class="gap-icon">🔬</div>
+      <div class="gap-title">Competitor Analysis — Zero</div>
+      <div class="gap-body">No analysis of competing Indian restaurants in Cockeysville, Timonium, and Hunt Valley — what keywords they rank for, what ads they run, what content performs for them. <strong>Crearelabs Growth and Premium plans include full competitor analysis</strong>, revealing exactly where market share is available to capture.</div>
+    </div>
+  </div>
+</section>
+
+<!-- GROWTH ROADMAP -->
+<section class="section section-dark" id="roadmap">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-label">📈 6-Month Plan</div>
+      <h2 class="section-title light">Growth <span class="italic">Roadmap</span></h2>
+    </div>
+    <p class="section-desc" style="color:rgba(255,255,255,0.4)">A month-by-month execution plan from account recovery to full market authority in Cockeysville and the broader Baltimore area.</p>
+  </div>
+
+  <div class="roadmap reveal">
+    <div class="roadmap-item">
+      <div class="roadmap-dot roadmap-dot-1"></div>
+      <div class="roadmap-month">Month 1 — Foundation</div>
+      <div class="roadmap-title">Fix, Setup & Launch</div>
+      <div class="roadmap-items">
+        <span class="roadmap-tag">Meta account recovery</span>
+        <span class="roadmap-tag">Duplicate Facebook page merge</span>
+        <span class="roadmap-tag">Instagram bio rewrite</span>
+        <span class="roadmap-tag">Google Business optimization</span>
+        <span class="roadmap-tag">Technical SEO fixes</span>
+        <span class="roadmap-tag">Schema markup added</span>
+        <span class="roadmap-tag">First 15 posts live</span>
+        <span class="roadmap-tag">Google Ads campaign launch</span>
+        <span class="roadmap-tag">Meta Ads re-launch</span>
+        <span class="roadmap-tag">Messenger automation setup</span>
+      </div>
+      <div class="roadmap-outcome">🎯 Expected: Meta Ads live again, 150–200 Instagram followers, first organic Google leads</div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-dot roadmap-dot-2"></div>
+      <div class="roadmap-month">Month 2 — Momentum</div>
+      <div class="roadmap-title">Content & Ads Gaining Ground</div>
+      <div class="roadmap-items">
+        <span class="roadmap-tag">First Reels campaign</span>
+        <span class="roadmap-tag">Blog post #1 published</span>
+        <span class="roadmap-tag">Review generation campaign active</span>
+        <span class="roadmap-tag">Facebook Events running</span>
+        <span class="roadmap-tag">Local citation building (30+ directories)</span>
+        <span class="roadmap-tag">Meta Ads optimization (based on Month 1 data)</span>
+        <span class="roadmap-tag">UGC campaign launched</span>
+        <span class="roadmap-tag">Influencer outreach started</span>
+      </div>
+      <div class="roadmap-outcome">🎯 Expected: 300–400 Instagram followers, 5+ Facebook reviews, 2–3 keyword rankings improving</div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-dot roadmap-dot-3"></div>
+      <div class="roadmap-month">Month 3 — Results Visible</div>
+      <div class="roadmap-title">Leads & Traffic Flowing</div>
+      <div class="roadmap-items">
+        <span class="roadmap-tag">Meta Ads scaled to $250–300/month</span>
+        <span class="roadmap-tag">Retargeting campaigns live</span>
+        <span class="roadmap-tag">Blog post #2 + #3</span>
+        <span class="roadmap-tag">First influencer collab reel</span>
+        <span class="roadmap-tag">Competitor analysis complete</span>
+        <span class="roadmap-tag">Catering ads launched</span>
+        <span class="roadmap-tag">Email list building started</span>
+        <span class="roadmap-tag">Seasonal campaign (summer events)</span>
+      </div>
+      <div class="roadmap-outcome">🎯 Expected: 500+ IG followers, 50–100 monthly inbound leads across all channels, page 1 for 3–5 keywords</div>
+    </div>
+    <div class="roadmap-item">
+      <div class="roadmap-dot roadmap-dot-4"></div>
+      <div class="roadmap-month">Months 4–5 — Authority</div>
+      <div class="roadmap-title">SEO Compounding, Brand Known Locally</div>
+      <div class="roadmap-items">
+        <span class="roadmap-tag">Page 1 for primary keywords</span>
+        <span class="roadmap-tag">800–1,000 Instagram followers</span>
+        <span class="roadmap-tag">WhatsApp broadcast active</span>
+        <span class="roadmap-tag">Email list 200+ subscribers</span>
+        <span class="roadmap-tag">Backlink outreach results</span>
+        <span class="roadmap-tag">GBP showing in top 3 map results</span>
+        <span class="roadmap-tag">Catering leads flowing</span>
+      </div>
+      <div class="roadmap-outcome">🎯 Expected: 100–200 monthly leads/calls, consistent weekend full tables, catering inquiries weekly</div>
+    </div>
+    <div class="roadmap-item" style="margin-bottom:0;">
+      <div class="roadmap-dot roadmap-dot-5"></div>
+      <div class="roadmap-month">Month 6+ — Market Leader</div>
+      <div class="roadmap-title">Hyderabad Stories Owns Cockeysville</div>
+      <div class="roadmap-items">
+        <span class="roadmap-tag">1,000+ Instagram followers</span>
+        <span class="roadmap-tag">Page 1 for 10+ keywords</span>
+        <span class="roadmap-tag">Review cycle self-sustaining</span>
+        <span class="roadmap-tag">Monthly catering bookings</span>
+        <span class="roadmap-tag">Email list converting weekly</span>
+        <span class="roadmap-tag">Competitor gap exploited</span>
+        <span class="roadmap-tag">Full brand authority in MD area</span>
+      </div>
+      <div class="roadmap-outcome">🏆 Goal: Best-ranked Indian restaurant in the Cockeysville–Baltimore corridor across Google, social, and ads</div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM SECTION -->
+<section class="section" id="team">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-label">👥 Your Dedicated Team</div>
+      <h2 class="section-title">Meet <span class="italic">Crearelabs</span></h2>
+    </div>
+    <p class="section-desc">The experts personally handling every aspect of Hyderabad Stories' digital growth — one specialist per domain, zero generalists.</p>
+  </div>
+
+  <div class="team-grid reveal">
+    <div class="team-card">
+      <div class="team-avatar avatar-1">S</div>
+      <div class="team-name">Siddhartha</div>
+      <div class="team-role team-role-1">Creative Lead</div>
+      <div class="team-tags">
+        <span class="team-tag">Graphics Design</span>
+        <span class="team-tag">Reels Production</span>
+        <span class="team-tag">Brand Aesthetics</span>
+        <span class="team-tag">Video Editing</span>
+        <span class="team-tag">Content Visuals</span>
+      </div>
+      <div style="margin-top:16px; font-size:13px; color:var(--muted); line-height:1.6;">Responsible for every visual piece of content — from scroll-stopping graphics to viral-worthy Reels. Ensures Hyderabad Stories has a consistent, premium brand look across all platforms.</div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar avatar-2">D</div>
+      <div class="team-name">Durgesh</div>
+      <div class="team-role team-role-2">Content Strategist</div>
+      <div class="team-tags">
+        <span class="team-tag">Regular Posting</span>
+        <span class="team-tag">Blog Writing</span>
+        <span class="team-tag">Content Calendar</span>
+        <span class="team-tag">Copywriting</span>
+        <span class="team-tag">Content Planning</span>
+      </div>
+      <div style="margin-top:16px; font-size:13px; color:var(--muted); line-height:1.6;">Owns the content calendar and blog strategy. Writes SEO-optimized blog articles that rank on Google, manages the posting schedule, and ensures a consistent brand voice across all written content.</div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar avatar-3">A</div>
+      <div class="team-name">Angel</div>
+      <div class="team-role team-role-3">Client Success</div>
+      <div class="team-tags">
+        <span class="team-tag">Client Communications</span>
+        <span class="team-tag">Monthly Reports</span>
+        <span class="team-tag">Blog Writing</span>
+        <span class="team-tag">Performance Analysis</span>
+        <span class="team-tag">Strategy Briefings</span>
+      </div>
+      <div style="margin-top:16px; font-size:13px; color:var(--muted); line-height:1.6;">Your primary point of contact at Crearelabs. Handles all client communications, explains monthly performance reports in clear language, and ensures Hyderabad Stories always knows exactly what's happening and why.</div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar avatar-4">D</div>
+      <div class="team-name">Dinesh</div>
+      <div class="team-role team-role-4">SEO & Ads Specialist</div>
+      <div class="team-tags">
+        <span class="team-tag">SEO Specialist</span>
+        <span class="team-tag">Google Ads</span>
+        <span class="team-tag">Keyword Research</span>
+        <span class="team-tag">Technical SEO</span>
+        <span class="team-tag">Google Business</span>
+      </div>
+      <div style="margin-top:16px; font-size:13px; color:var(--muted); line-height:1.6;">Handles all technical SEO implementation, Google Ads campaign management, and keyword strategy. Dinesh's expertise ensures Hyderabad Stories appears at the top when customers in Cockeysville search for Indian food.</div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar avatar-5">S</div>
+      <div class="team-name">Sanjay</div>
+      <div class="team-role team-role-5">Founder & Meta Lead</div>
+      <div class="team-founder-badge">Founder</div>
+      <div class="team-tags">
+        <span class="team-tag">Meta Ads Strategy</span>
+        <span class="team-tag">Facebook Ads</span>
+        <span class="team-tag">Instagram Ads</span>
+        <span class="team-tag">Growth Strategy</span>
+        <span class="team-tag">Account Recovery</span>
+      </div>
+      <div style="margin-top:16px; font-size:13px; color:var(--muted); line-height:1.6;">Founder of Crearelabs. Personally handles all Meta advertising strategy — the blocked ad account recovery, campaign architecture, audience targeting, and ongoing optimization. The person accountable for your paid social ROI.</div>
+    </div>
+  </div>
+
+  <div style="background:var(--cl-dark); border-radius:24px; padding:40px; margin-top:40px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:28px;" class="reveal">
+    <div style="text-align:center;">
+      <div style="font-family:'Playfair Display',serif; font-size:40px; font-weight:900; color:var(--cl-red);">5</div>
+      <div style="color:rgba(255,255,255,0.5); font-size:13px; margin-top:4px;">Dedicated Specialists</div>
+    </div>
+    <div style="text-align:center; border-left:1px solid rgba(255,255,255,0.06); border-right:1px solid rgba(255,255,255,0.06);">
+      <div style="font-family:'Playfair Display',serif; font-size:40px; font-weight:900; color:var(--cl-gold);">1</div>
+      <div style="color:rgba(255,255,255,0.5); font-size:13px; margin-top:4px;">Dedicated Client (You)</div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-family:'Playfair Display',serif; font-size:40px; font-weight:900; color:var(--ok);">6mo</div>
+      <div style="color:rgba(255,255,255,0.5); font-size:13px; margin-top:4px;">Commitment to Results</div>
+    </div>
+  </div>
+</section>
+
+<!-- PACKAGES -->
+<section class="section section-alt" id="packages">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-label">📦 Investment Plans</div>
+      <h2 class="section-title">Choose Your <span class="italic">Growth Plan</span></h2>
+    </div>
+    <p class="section-desc">All prices exclusive of 18% GST. Ad spend paid directly by client to Google/Meta. Minimum 6-month commitment recommended.</p>
+  </div>
+
+  <div class="pkg-grid reveal" style="margin-bottom:40px;">
+    <!-- STARTER -->
+    <div class="pkg-card">
+      <span class="pkg-badge pkg-badge-starter">STARTER</span>
+      <div class="pkg-name">Bundle 1 — Starter</div>
+      <div class="pkg-price">₹60,000</div>
+      <div class="pkg-price-sub">/ month + 18% GST</div>
+      <div class="pkg-divider"></div>
+      <div class="pkg-feature-list">
+        <div class="pkg-feature"><div class="pkg-feature-check">✓</div>Google Marketing Starter — ₹18,000 (5 keywords, basic SEO)</div>
+        <div class="pkg-feature"><div class="pkg-feature-check">✓</div>Google Ads Management — ₹5,000/month</div>
+        <div class="pkg-feature"><div class="pkg-feature-check">✓</div>Social Media Starter Growth — ₹25,000 (15 posts/month)</div>
+        <div class="pkg-feature"><div class="pkg-feature-check">✓</div>Meta Ads Management — ₹12,000/month</div>
+        <div class="pkg-feature"><div class="pkg-feature-check">✓</div>10 Graphics + 5 Reels per month</div>
+        <div class="pkg-feature"><div class="pkg-feature-check">✓</div>Basic content calendar</div>
+        <div class="pkg-feature"><div class="pkg-feature-check">✓</div>Monthly reporting</div>
+        <div class="pkg-feature"><div class="pkg-feature-check">✓</div>Meta account recovery included</div>
+      </div>
+      <div class="pkg-cta pkg-cta-default">Select Starter</div>
+    </div>
+    <!-- GROWTH (FEATURED) -->
+    <div class="pkg-card featured">
+      <span class="pkg-badge pkg-badge-rec">RECOMMENDED</span>
+      <div class="pkg-name">Bundle 2 — Growth</div>
+      <div class="pkg-price" style="color:white">₹75,000</div>
+      <div class="pkg-price-sub">/ month + 18% GST</div>
+      <div class="pkg-divider"></div>
+      <div class="pkg-feature-list">
+        <div class="pkg-feature"><div class="pkg-feature-check">✓</div>Google Marketing Growth — ₹25,000 (12 keywords, advanced SEO)</div>
+        <div class="pkg-feature"><div class="pkg-feature-check">✓</div>Google Ads Management — ₹5,000/month</div>
+        <div class="pkg-feature"><div class="pkg-feature-check">✓</div>Social Media Business Pro — ₹45,000 (40 posts/month)</div>
+        <div class="pkg-feature"><div class="pkg-feature-check" style="background:var(--cl-gold); color:var(--cl-dark)">★</div><strong style="color:var(--cl-gold)">Meta Ads Management — FREE (₹12,000 value)</strong></div>
+        <div class="pkg-feature"><div class="pkg-feature-check">✓</div>20 Graphics + 20 Reels per month</div>
+        <div class="pkg-feature"><div class="pkg-feature-check">✓</div>Advanced content strategy</div>
+        <div class="pkg-feature"><div class="pkg-feature-check">✓</div>Competitor analysis included</div>
+        <div class="pkg-feature"><div class="pkg-feature-check">✓</div>Bi-weekly performance reporting</div>
+        <div class="pkg-feature"><div class="pkg-feature-check">✓</div>Meta account recovery + full setup</div>
+      </div>
+      <div class="pkg-cta pkg-cta-featured">Select Growth Plan</div>
+    </div>
+    <!-- PREMIUM -->
+    <div class="pkg-card">
+      <span class="pkg-badge pkg-badge-premium">PREMIUM</span>
+      <div class="pkg-name">Bundle 3 — Premium</div>
+      <div class="pkg-price">₹1,20,000</div>
+      <div class="pkg-price-sub">/ month + 18% GST</div>
+      <div class="pkg-divider"></div>
+      <div class="pkg-feature-list">
+        <div class="pkg-feature"><div class="pkg-feature-check">✓</div>Google Marketing Premium — ₹45,000 (25 keywords, full-scale)</div>
+        <div class="pkg-feature"><div class="pkg-feature-check">✓</div>Google Ads Management — ₹10,000/month (all campaign types)</div>
+        <div class="pkg-feature"><div class="pkg-feature-check">✓</div>Social Media Market Leader — ₹65,000 (50 posts/month)</div>
+        <div class="pkg-feature"><div class="pkg-feature-check" style="background:var(--cl-gold); color:white">★</div>Meta Ads Management — FREE (₹12,000 value)</div>
+        <div class="pkg-feature"><div class="pkg-feature-check">✓</div>25 Graphics + 25 Reels per month</div>
+        <div class="pkg-feature"><div class="pkg-feature-check">✓</div>Full brand plotting + PR strategy</div>
+        <div class="pkg-feature"><div class="pkg-feature-check">✓</div>High-quality backlinks + authority building</div>
+        <div class="pkg-feature"><div class="pkg-feature-check">✓</div>Weekly performance reports</div>
+        <div class="pkg-feature"><div class="pkg-feature-check">✓</div>Technical SEO + Core Web Vitals</div>
+      </div>
+      <div class="pkg-cta pkg-cta-default">Select Premium</div>
+    </div>
+  </div>
+
+  <!-- TERMS -->
+  <div class="table-wrapper reveal">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Term</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Taxation</strong></td>
+          <td>All prices above are exclusive of 18% GST</td>
+        </tr>
+        <tr>
+          <td><strong>Payment Terms</strong></td>
+          <td>100% advance at start of monthly cycle.</td>
+        </tr>
+        <tr>
+          <td><strong>Ad Spend</strong></td>
+          <td>Google and Meta ad spend is paid directly by Hyderabad Stories to Google/Meta — not included in above fees</td>
+        </tr>
+        <tr>
+          <td><strong>Content Approval</strong></td>
+          <td>Content calendar delivered 5 days in advance · Client must review and approve within 48 hours</td>
+        </tr>
+        <tr>
+          <td><strong>Access Required</strong></td>
+          <td>Admin/Advertiser access to Meta Business Suite, Google Ads, Google Business Profile, and website CMS</td>
+        </tr>
+        <tr>
+          <td><strong>Minimum Commitment</strong></td>
+          <td>6 months recommended for Google Marketing (SEO takes 5–8 months) · 3 months minimum for Meta Ads to optimize algorithm</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-brand">Creare<span>labs</span></div>
+    <div class="footer-tagline">Creating brands. Growing businesses. Telling stories.</div>
+  </div>
+  <div class="footer-info">
+    Prepared for Hyderabad Stories · Cockeysville, MD<br>
+    9832 York Rd #1D · (443) 288-2262 · hydstories.com<br>
+    Report Date: May 2026 · Crearelabs Digital Agency
+  </div>
+</footer>
+
+<script>
+// CURSOR
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.transform = `translate(${mx - 6}px, ${my - 6}px)`;
+});
+function animateRing() {
+  rx += (mx - rx) * 0.12;
+  ry += (my - ry) * 0.12;
+  ring.style.transform = `translate(${rx - 20}px, ${ry - 20}px)`;
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+// REVEAL ON SCROLL
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), 80);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.08 });
+reveals.forEach(el => observer.observe(el));
+
+// NAV ACTIVE STATE
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(section => {
+    if (window.scrollY >= section.offsetTop - 100) current = section.getAttribute('id');
+  });
+  navLinks.forEach(link => {
+    link.style.color = link.getAttribute('href') === '#' + current
+      ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.45)';
+  });
+});
+
+// SCORE COUNTER ANIMATION
+function animateCounter(el, target, suffix='') {
+  let count = 0;
+  const inc = target / 40;
+  const timer = setInterval(() => {
+    count = Math.min(count + inc, target);
+    el.textContent = Math.floor(count) + suffix;
+    if (count >= target) clearInterval(timer);
+  }, 30);
+}
+const scoreObs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const circles = entry.target.querySelectorAll('.score-circle');
+      circles.forEach(c => {
+        const val = parseInt(c.textContent);
+        animateCounter(c, val);
+      });
+      scoreObs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.audit-score-card').forEach(c => scoreObs.observe(c));
+</script>
+</body>
+</html>
